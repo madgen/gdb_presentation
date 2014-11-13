@@ -1,0 +1,7 @@
+# Usage
+
+Create a dst folder in demos and then run make to create the binaries. Warnings are intentionally suppressed.
+
+# Licence
+
+Everything except change me is under GPL licence. Do whatever you want with it.

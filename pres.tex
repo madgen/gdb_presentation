@@ -1,0 +1,162 @@
+\documentclass{beamer}
+
+\title{Introduction to GDB}
+\subtitle{(or how to debug like a pro)}
+\author{Mistral Contrastin}
+
+\beamertemplatenavigationsymbolsempty
+
+\setbeamerfont{page number in head/foot}{size=\small}
+\setbeamertemplate{footline}[frame number]
+\begin{document}
+  \frame{\maketitle}
+
+  \begin{frame}
+    \begin{center}
+      {\LARGE ``What is wrong with printf?'' -- \textsl{Radu}} \\
+    \end{center}
+  \end{frame}
+
+  \begin{frame}{GDB as a Swiss Army Knife}
+    \begin{itemize} 
+      \item Debugger (duh)
+      \item Memory inspector
+      \item Disassembler
+      \item Runtime
+      \item Patcher
+      \item Hex editor
+      \item \ldots
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}{Start with the basics}
+    \begin{description}[leftmargin=2em,style=nextline]
+      \item[Compilation] \texttt{\$ gcc -g <file>}
+      \item[Start] \texttt{\$ gdb <binary>}
+      \item[Get to \texttt{main}] \texttt{> break main}
+      \item[Inspect code] \texttt{> list}
+      \item[Execute] \texttt{> run}
+      \item[Run line by line] \texttt{> next} / \texttt{> step}
+      \item[Inspect variable] \texttt{> print var}
+    \end{description}
+  \end{frame}
+
+  \begin{frame}{Unleash the power of \textbf{breakpoints} and \textbf{watchpoints}}
+    
+    Lets you stop a program at arbitrary lines or at even deeper granularity.
+
+    \begin{description}
+      \item[Set] \texttt{> break [filename:]<line number> [if expr]} \\
+                 \texttt{> watch [filename:]<line number> [if expr]}
+      \item[Conditional] \texttt{> cond <breakpoint number> expr}
+      \item[List] \texttt{> info breakpoints}
+      \item[Delete] \texttt{> delete <breakpoint number>}
+      \item[Temporary] \texttt{> tbreak <line number>}
+      \item[Function] \texttt{> break <function name>}
+      \item[Instruction] \texttt{> break *<memory address>}
+    \end{description}
+  \end{frame}
+
+  \begin{frame}{Inspect memory}
+    \begin{description}
+      \item[Inspect locals] \texttt{> info local}
+      \item[Inspect arguments] \texttt{> info args}
+      \item[Stack trace] \texttt{> where / backtrace / info stack}
+      \item[Stack trace limit] \texttt{> set backtrace limit <n>}
+    \end{description}
+  \end{frame}
+
+  \begin{frame}{Inspect memory, cont'd}
+    General memory inspection format is \texttt{p x/nfu}, where n is
+    repeat count, f is display format and u is the unit size.
+    \vfill
+
+    \begin{columns}
+      \column{0.5\textwidth}
+      Options for display format
+      \begin{description}
+        \item[bytes] b
+        \item[halfwords] h
+        \item[words] w
+        \item[giant words] g
+      \end{description}
+
+      \column{0.5\textwidth}
+      Common display formats
+      \begin{description}
+        \item[decimal] d
+        \item[hexadecimal] x
+        \item[octal] o
+        \item[string] s
+        \item[instruction] i
+      \end{description}
+    \end{columns}
+
+  \end{frame}
+
+  \begin{frame}{Text User Interface}
+    \begin{columns}
+      \column{0.6\textwidth}
+        \begin{description} 
+          \item[Enter] \texttt{C-x a} within GDB or \\ \texttt{\$ gdb -tui}
+          \item[Exit] \texttt{C-x a} 
+          \item[Single key] \texttt{C-x s}
+        \end{description}
+    
+      \column{0.4\textwidth}
+        Single key mode bindings:
+        \begin{description}
+          \item[run] r
+          \item[continue] c
+          \item[next] n
+          \item[step] s
+          \item[where] w
+          \item[info locals] v
+          \item[exit] q
+        \end{description}
+    \end{columns}
+  \end{frame}
+
+  \begin{frame}{Use \textbf{core files} to save time}
+    \begin{itemize}
+      \item \texttt{\$ ulimit -c <number of bytes>} 
+      \item Linux dumps at the current working directory with name \texttt{core}
+      \item For better core file name on Linux (\texttt{<filename>\_<pid>.core})
+
+        \texttt{\$ sudo su}
+
+        \texttt{\$ echo \%e\_\%p.core > /proc/sys/kernel/core\_pattern}
+      \item Mac dumps at \texttt{/cores} with name \texttt{core.<PID>}
+      \item Task manager \texttt{>} Right click \texttt{>} Create Dump File \\
+        {\scriptsize (please use Cygwin instead)}
+      \item \texttt{gdb <file> <core>}
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}{C debugging tips and tricks}
+    \begin{itemize}
+      \item Principle of Confirmation
+      \item ``Premature optimization is the root of all evil.'' \\
+        \hfill -- \textsl{Donald Knuth}
+      \item $\uparrow$ Except when you use it as a lynt
+      \item Always compile with -Wall -Wextra -pedantic
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}{Go down the rabbit hole}
+    \begin{itemize}
+      \item Attaching processes
+      \item Remote debugging 
+      \item Kernel debugging
+      \item Hardware and memory breakpoints
+      \item Multiple TUI windows
+      \item LLDB
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}
+    \begin{center}
+      {\LARGE Thank you!}
+    \end{center}
+  \end{frame}
+\end{document}

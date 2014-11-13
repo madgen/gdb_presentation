@@ -1,0 +1,10 @@
+demos/dst
+*.swp
+*~
+pres.aux
+pres.log
+pres.nav
+pres.out
+pres.snm
+pres.toc
+.DS_Store
